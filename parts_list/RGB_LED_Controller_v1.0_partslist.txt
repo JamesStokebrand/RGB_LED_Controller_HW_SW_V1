@@ -1,0 +1,77 @@
+Partlist
+
+Exported from ATmega328p_XBee_Devboard_v1.5.brd at 10/7/14 6:18 PM
+
+EAGLE Version 6.6.0 Copyright (c) 1988-2014 CadSoft
+
+Assembly variant: 
+
+Part       Value                   Package          Library                       Position (inch)       Orientation
+
+C1         100nF                   C025-030X050     adafruit                      (5.75 1)              R90
+C2         10uF                    C025-030X050     adafruit                      (5.75 1.2)            R270
+C3         100nF                   C025-024X044     adafruit                      (3.25 1.3)            R270
+C4         20pF                    C025-024X044     adafruit                      (3.9 1.2)             R180
+C5         1uF                     C025-030X050     adafruit                      (3.1 0.25)            R90
+C6         1uF                     C025-030X050     adafruit                      (3.1 1.9)             R270
+C7         1uF                     C025-030X050     adafruit                      (2.5 0.25)            R90
+C8         1uF                     C025-030X050     adafruit                      (2.8 0.25)            R90
+C9         20pf                    C025-024X044     adafruit                      (3.9 1.8)             R180
+C10        1uF                     C025-030X050     adafruit                      (2.8 1.9)             R270
+C11        1uF                     C025-030X050     adafruit                      (2.5 1.9)             R270
+C12        100nF                   C025-024X044     adafruit                      (3.2 0.9)             R270
+C13        100nF                   C025-024X044     adafruit                      (5.25 1.25)           R0
+CN1        DC Barrel Jack          DCJACK_2MM_PTH   adafruit                      (6.2 0.6)             R90
+D1         1N4004                  DO41-10          adafruit                      (5.6 1.1)             R270
+D2         1N4004                  DO41-10          diode                         (2.65 0.4)            R90
+D3         1N4004                  DO41-10          diode                         (3.25 0.4)            R90
+D4         1N4004                  DO41-10          diode                         (3.25 1.75)           R270
+D5         1N4004                  DO41-10          diode                         (2.95 0.4)            R90
+D6         1N4004                  DO41-10          diode                         (2.95 1.75)           R270
+D7         1N4004                  DO41-10          diode                         (2.65 1.75)           R270
+IC1        LD117AV33               TO220L1          v-reg                         (5.4 1.6)             R270
+ICP_HEADER                         2X03             pinhead                       (4.7 1.85)            R180
+JP1                                2X04             pinhead                       (2.2 1.45)            R90
+JP2                                2X04             pinhead                       (4.2 1.45)            R90
+JP3                                2X07             pinhead                       (0.2 0.5)             R90
+JP4                                2X07             pinhead                       (2.2 0.5)             R90
+JP5                                1X02             pinhead                       (5.7 1.95)            R0
+LED1       3mm RED                 LED3MM           adafruit                      (1.8 1.19)            MR180
+LED2       3mm RED                 LED3MM           adafruit                      (1.55 0.94)           MR180
+LED3       3mm RED                 LED3MM           adafruit                      (1.23 0.8)            MR180
+LED4       3mm RED                 LED3MM           adafruit                      (0.87 0.8)            MR180
+LED5       3mm RED                 LED3MM           adafruit                      (0.55 0.94)           MR180
+LED6       3mm RED                 LED3MM           adafruit                      (0.29 1.19)           MR180
+LED7       3mm RED                 LED3MM           adafruit                      (5.5 0.45)            R0
+LED8       3mm RED                 LED3MM           adafruit                      (3.9 0.55)            R0
+R1         300 Ohm                 0204/5           adafruit                      (1.8 1.95)            R0
+R2         300 Ohm                 0204/5           adafruit                      (1.8 1.85)            R0
+R3         300 Ohm                 0204/5           adafruit                      (1.8 1.75)            R0
+R4         300 Ohm                 0204/5           adafruit                      (1.8 1.65)            R0
+R5         2K                      0204/5           adafruit                      (3.05 0.5)            R270
+R6         2K                      0204/5           adafruit                      (3.15 0.5)            R270
+R7         2K                      0204/5           adafruit                      (3.05 1.65)           R90
+R8         2K                      0204/5           adafruit                      (3.15 1.65)           R90
+R9         10K Ohm                 0204/5           adafruit                      (5.05 1.8)            R90
+R10        2K                      0204/5           adafruit                      (2.45 0.5)            R270
+R11        2K                      0204/5           adafruit                      (2.55 0.5)            R270
+R12        2K                      0204/5           adafruit                      (2.75 0.5)            R90
+R13        2K                      0204/5           adafruit                      (2.85 0.5)            R270
+R14        300 Ohm                 0204/5           adafruit                      (3.95 0.8)            R270
+R15        2K                      0204/5           adafruit                      (2.75 1.65)           R90
+R16        2K                      0204/5           adafruit                      (2.85 1.65)           R90
+R17        2K                      0204/5           adafruit                      (2.55 1.65)           R90
+R18        2K                      0204/5           adafruit                      (2.45 1.65)           R90
+R19        300 Ohm                 0204/5           adafruit                      (1.8 1.55)            R180
+R20        300 Ohm                 0204/5           adafruit                      (1.8 1.45)            R180
+R21        300 Ohm                 0204/5           adafruit                      (5.5 0.7)             R270
+S1         Swittch                 B3F-10XX         switch-omron                  (1.05 0.3)            MR270
+S2         RESET                   B3F-10XX         switch-omron                  (4.9 1.4)             R0
+S3         Swittch                 B3F-10XX         switch-omron                  (0.55 0.3)            MR270
+S5         Swittch                 B3F-10XX         switch-omron                  (1.55 0.3)            MR270
+S6         EG1213                  EG1213           adafruit                      (5.95 1.1)            R90
+SW1        ROTARTY_ENCODER         ROTARY_ENC_PLAIN SparkFun-Electromechanical    (1.05 1.7)            MR270
+U1         ATMEGA328P-PU-1030050P1 DIP28            OPL_Eagle_Library_Seeed_Sudio (3.55 1.3)            R180
+V1         7414N                   DIL14            74ttl-din                     (2.8 0.9)             R0
+XBEE       XBEE                    XBEE             adafruit                      (4.85 0.65)           R180
+Y1          9.216 Mhz              HC49U-V          SparkFun-FreqCtrl             (3.9 1.5)             R90
