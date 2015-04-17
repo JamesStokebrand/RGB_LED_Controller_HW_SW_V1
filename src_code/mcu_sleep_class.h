@@ -47,6 +47,9 @@
 #include "event_listing.h"
 #endif
 
+#ifndef _PIN_CLASS_H_
+#include "pin_class.h"
+#endif
 
 class mcu_sleep_class
 {
@@ -76,14 +79,29 @@ public:
     static mcu_sleep_class* getInstance();
     void DisableSleep();
     void EnableSleep();
+
+    // These methods enable/disable the status LED for
+    //  debugging
+    void EnableStatusLED();
+    void DisableStatusLED();
+
     void SetInterfaceUsage(E_PowerUsage const &_Interface, E_PowerInterfaceInUse const &_InUse);
     void GoMakeSleepNow();
+
+    // To save power, set unused pins as input and turn on the pull up resistors
+    void SetInputAndPullupResistor(IOPinDefines::E_PinDef const &A);
 
 private:
     // Constructor is private for singleton
     mcu_sleep_class()
     : _AllowSleep(false)
+    , SleepStatusLED(IOPinDefines::E_PinDef::E_PIN_PD2)
+    , _EnableStatusLED(false)
     {
+
+        // Disable status LED.
+        DisableStatusLED();
+
         // Disable all interfaces
         _power_reduction_variable =
               (1<<PRTWI)     // turn off TWI
@@ -109,6 +127,10 @@ private:
 
     volatile uint8_t _power_reduction_variable;
     bool _AllowSleep;
+
+    // Status LED (Yellow)
+    LED_CommonCathode SleepStatusLED;
+    bool _EnableStatusLED;
 };
 
 #endif

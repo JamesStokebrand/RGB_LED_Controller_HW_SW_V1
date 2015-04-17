@@ -36,6 +36,7 @@
 
 *****************************************************/
 
+#include <avr/io.h>
 
 #ifndef _EVENT_LISTING_H_
 #include "event_listing.h"
@@ -61,30 +62,22 @@ public:
     }
     virtual ~base_state_class() {}
 
+    // Process is called with new events pushed into
+    //  the state machine.
+    void process(const event_element_class &A);
+
+    // This method is to be called internal to the state machine to 
+    //   perform a state transition once we exit the current
+    //   state.
     void TRAN(volatile STATE target) { 
         next_state = target;
         transition = true;
     }
 
-    void process(const event_element_class &A)
-    { 
-        // Normal processing
-        (this->*state)(A);
+    // This method is to be called external to the state machine to 
+    //  force an immediate state transition.
+    void EXTERNAL_TRAN(volatile STATE target);
 
-        // State transition requested?
-        if (transition)
-        {
-            // Executing a transition ... exit this state
-            (this->*state)(EXIT_EVENT);
-
-            // Set the new state
-            state = next_state;
-
-            // Executing a transition ... enter this new state
-            (this->*state)(ENTER_EVENT);
-            transition = false;
-        }
-    }
 
     volatile STATE state;
     volatile STATE next_state;

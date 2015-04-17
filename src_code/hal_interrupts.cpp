@@ -84,6 +84,60 @@ ISR(PCINT2_vect)
     PORTD_interrupt_subject::pINTR_handler->Notify();
 }
 
+// Define the Port subjects for pin interrupts
+PORTB_interrupt_subject aPortB_Inter;
+PORTC_interrupt_subject aPortC_Inter;
+PORTD_interrupt_subject aPortD_Inter;
+
+// HAL lookup for the appropriate interrupt subject
+InterruptSubjectPinIntr *lookup_port_interrupt_subject::return_port_interrupt_subject(IOPinDefines::E_PinDef const &A)
+{
+    switch (A)
+    {
+    case IOPinDefines::E_PIN_PB0:
+    case IOPinDefines::E_PIN_PB1:
+    case IOPinDefines::E_PIN_PB2:
+    case IOPinDefines::E_PIN_PB3:
+    case IOPinDefines::E_PIN_PB4:
+    case IOPinDefines::E_PIN_PB5:
+    case IOPinDefines::E_PIN_PB6:
+    case IOPinDefines::E_PIN_PB7:
+    {
+        return &aPortB_Inter;
+    }
+    break;
+    case IOPinDefines::E_PIN_PC0:
+    case IOPinDefines::E_PIN_PC1:
+    case IOPinDefines::E_PIN_PC2:
+    case IOPinDefines::E_PIN_PC3:
+    case IOPinDefines::E_PIN_PC4:
+    case IOPinDefines::E_PIN_PC5:
+    case IOPinDefines::E_PIN_PC6:
+    // NOTE there is no PC7
+    {
+        return &aPortC_Inter;
+    }
+    break;
+    case IOPinDefines::E_PIN_PD0:
+    case IOPinDefines::E_PIN_PD1:
+    case IOPinDefines::E_PIN_PD2:
+    case IOPinDefines::E_PIN_PD3:
+    case IOPinDefines::E_PIN_PD4:
+    case IOPinDefines::E_PIN_PD5:
+    case IOPinDefines::E_PIN_PD6:
+    case IOPinDefines::E_PIN_PD7:
+    {
+        return &aPortD_Inter;
+    }
+    break;
+    default:
+        // Do nothing in this case.
+        // All other pins are not defined.
+    break;
+    }
+    return nullptr;
+}
+
 
 // Timer2
 TIMER2_interrupt_subject* TIMER2_interrupt_subject::pINTR_handler = 0;

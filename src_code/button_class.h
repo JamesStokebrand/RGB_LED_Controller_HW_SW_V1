@@ -52,6 +52,9 @@
 #include "observer_class.h"
 #endif
 
+#ifndef _HAL_INTERRUPTS_H_
+#include "hal_interrupts.h"
+#endif
 
 
 class ButtonClass 
@@ -69,6 +72,9 @@ public:
     {
         // Read/set the current button status
         CheckStatus();
+
+        // Lookup the interrupt subject for this pin.
+        _Subject = lookup_port_interrupt_subject::return_port_interrupt_subject(_Pin);
     }
 
     virtual ~ButtonClass() {
@@ -137,6 +143,8 @@ public:
         }
     }
 
+    // Store its interrupt subject.
+    InterruptSubjectPinIntr *_Subject;
 private:
 };
 

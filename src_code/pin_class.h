@@ -109,7 +109,6 @@ public:
     volatile uint8_t* _PinReg;
     volatile uint8_t* _PortReg;
     volatile uint8_t* _DDRReg;
-    InterruptSubjectPinIntr* _Subject;
     E_PinIntrType _PinInterruptType;
     E_PinDef _Pin;
     uint8_t _Bit;

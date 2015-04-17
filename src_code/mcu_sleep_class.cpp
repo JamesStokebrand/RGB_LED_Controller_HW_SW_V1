@@ -40,18 +40,6 @@
 #include "mcu_sleep_class.h"
 #endif
 
-#define DEBUG_SLEEP 0
-
-#if DEBUG_SLEEP
-#ifndef _PIN_CLASS_H_
-#include "pin_class.h"
-#endif
-
-// Status LED (Yellow)
-LED_CommonCathode SleepStatusLED(IOPinDefines::E_PinDef::E_PIN_PD2);
-
-#endif
-
 mcu_sleep_class* mcu_sleep_class::m_pInstance = nullptr;
 
 mcu_sleep_class* mcu_sleep_class::getInstance()
@@ -69,6 +57,24 @@ void mcu_sleep_class::EnableSleep()
 {
     // Allow the MCU to go into sleep mode.
     _AllowSleep = true;
+}
+
+
+// These methods enable/disable the status LED during sleep
+//  for debugging needs
+
+// Disable status LED
+void mcu_sleep_class::DisableStatusLED() {
+    // Disable Status LED.
+    _EnableStatusLED = false;
+    SleepStatusLED.Off();
+}
+
+// Enable status LED
+void mcu_sleep_class::EnableStatusLED() {
+    // Enable Status LED.
+    _EnableStatusLED = true;
+    SleepStatusLED.On();
 }
 
 void mcu_sleep_class::SetInterfaceUsage(E_PowerUsage const &_Interface, E_PowerInterfaceInUse const &_InUse)
@@ -114,19 +120,41 @@ void mcu_sleep_class::GoMakeSleepNow()
     cli();
     sleep_enable();
     sleep_bod_disable();
-#if DEBUG_SLEEP
-    SleepStatusLED.On();
-#endif
+
+    // Toggle the status LED if enabled.
+    if (_EnableStatusLED) SleepStatusLED.Toggle();
+
     sei();
     sleep_cpu();
 
+    // ######################################
     // Have entered sleep here.
+    // ######################################
 
-#if DEBUG_SLEEP
-    SleepStatusLED.Off();
-#endif
+    // Toggle the status LED if enabled.
+    if (_EnableStatusLED) SleepStatusLED.Toggle();
+
     sleep_disable();
     sei();
 }
+
+void mcu_sleep_class::SetInputAndPullupResistor(IOPinDefines::E_PinDef const &A)
+{
+    // This doesn't save much power ... but every little 
+    //   bit helps.
+
+    // To save power:
+    //  Set unused pin as input
+    //  Activate pull up resistor
+    IOPinDefines temp(A);
+
+    // Set pin as input
+    *(temp._DDRReg) &= ~(1<<temp._Bit);
+
+    // Activate pull up resistor
+    *(temp._PortReg) |= (1<<temp._Bit);
+}
+
+
 
 

@@ -100,6 +100,7 @@ CPPSRC += comm_class.cpp
 CPPSRC += static_queue.cpp
 CPPSRC += pwm_six_display.cpp
 CPPSRC += mcu_sleep_class.cpp
+CPPSRC += state_class.cpp
 
 
 

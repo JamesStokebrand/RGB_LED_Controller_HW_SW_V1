@@ -64,13 +64,16 @@ typedef enum {
     ,E_RGB_NODE           // 0x09
 
     // SPI Hardware
-    ,E_SPI_01
-
-    // TWI/I2C Hardware
-    ,E_TWI_01
+    ,E_SPI_01             // 0x0A
 
     // EEPROM Hardware (makes use of spi)
-    ,E_EEPROM_01
+    ,E_EEPROM_01          // 0x0B
+
+    // TWI/I2C Hardware
+    ,E_TWI_01             // 0x0C
+
+    // BlinkM Hardware (makes use of TWI)
+    ,E_BLINKM_01          // 0x0D
 
     // Must be the last item on the list
     ,E_LAST_HARDWARE_EVENT 
@@ -102,55 +105,82 @@ typedef enum {
 
     // RGB Controller specific
     //  RGB Color methods
-    ,E_SET_RED             = 0xA0
-    ,E_SET_GREEN          // 0xA1
-    ,E_SET_BLUE           // 0xA2
+    ,E_SET_RED             = 0x10
+    ,E_SET_GREEN          // 0x11
+    ,E_SET_BLUE           // 0x12
     //  HSI Color methods
-    ,E_SET_HUE            // 0xA3
-    ,E_SET_SATURATION     // 0xA4
-    ,E_SET_INTENSITY      // 0xA5
+    ,E_SET_HUE            // 0x13
+    ,E_SET_SATURATION     // 0x14
+    ,E_SET_INTENSITY      // 0x15
     //  Rotary Encoder
-    ,E_RE_CW              // 0xA6
-    ,E_RE_CCW             // 0xA7
-    ,E_RE_PRESSED         // 0xA8
-    ,E_RE_RELEASED        // 0xA9
+    ,E_RE_CW              // 0x16
+    ,E_RE_CCW             // 0x17
+    ,E_RE_PRESSED         // 0x18
+    ,E_RE_RELEASED        // 0x19
     //  Button Combos
-    ,E_ONLY_RED           // 0xAA
-    ,E_ONLY_GREEN         // 0xAB
-    ,E_ONLY_BLUE          // 0xAC
-    ,E_ALL_OFF            // 0xAD
-    ,E_ALL_HALF           // 0xAE
-    ,E_ALL_ON             // 0xAF
+    ,E_ONLY_RED           // 0x1A
+    ,E_ONLY_GREEN         // 0x1B
+    ,E_ONLY_BLUE          // 0x1C
+    ,E_ALL_OFF            // 0x1D
+    ,E_ALL_HALF           // 0x1E
+    ,E_ALL_ON             // 0x1F
     //  Node Selection
-    ,E_SELECT             // 0xB0
-    ,E_FORCE_FEEDBACK     // 0xB1
+    ,E_SELECT             // 0x20
+    ,E_FORCE_FEEDBACK     // 0x21
 
     // RGB Node specific
     //  RGB Color
-    ,E_LED_RED_PWM         = 0xC0
-    ,E_LED_GREEN_PWM      // 0xC1
-    ,E_LED_BLUE_PWM       // 0xC2
+    ,E_LED_RED_PWM         = 0x30
+    ,E_LED_GREEN_PWM      // 0x31
+    ,E_LED_BLUE_PWM       // 0x32
     //  HSL Color 
-    ,E_LED_HUE_PWM        // 0xC3
-    ,E_LED_SATURATION_PWM // 0xC4
-    ,E_LED_INTENSITY_PWM  // 0xC5
+    ,E_LED_HUE_PWM        // 0x33
+    ,E_LED_SATURATION_PWM // 0x34
+    ,E_LED_INTENSITY_PWM  // 0x35
 
     // SPI Baseline
-    ,E_SPI_BYTE_COMPLETE   = 0xD0
-    ,E_SPI_MSG_COMPLETE   // 0xD1 Notified when the SPI queue is empty (IE msg complete)
-
-    // TWI Baseline
-    ,E_TWI_WRITE_COMPLETE
-    ,E_TWI_READ_COMPLETE
-    ,E_TWI_ERROR_EVENT
+    ,E_SPI_BYTE_COMPLETE   = 0x40
+    ,E_SPI_MSG_COMPLETE   // 0x41 Notified when the SPI queue is empty (IE msg complete)
 
     // EEPROM msg responses
-    ,E_EEPROM_READ_REQUEST
+    ,E_EEPROM_READ_REQUEST = 0x50
     ,E_EEPROM_READ_COMPLETE
     ,E_EEPROM_WRITE_REQUEST
     ,E_EEPROM_WRITE_COMPLETE
     ,E_EEPROM_STATUS_REQUEST
     ,E_EEPROM_STATUS_COMPLETE
+
+    // TWI Baseline
+    ,E_TWI_WRITE_COMPLETE  = 0x60
+    ,E_TWI_READ_COMPLETE
+    ,E_TWI_ERROR_EVENT
+
+    // BlinkM msg responses
+    //  Unexpected TWI response for the current state
+    ,E_BLINKM_UNEXPECTED_TWI_RESPONSE_FOR_STATE = 0x70
+
+    //  Get Current RGB Color Responses
+    ,E_BLINKM_GET_RGB_RED_RESPONSE
+    ,E_BLINKM_GET_RGB_GREEN_RESPONSE
+    ,E_BLINKM_GET_RGB_BLUE_RESPONSE
+    ,E_BLINKM_GET_RGB_COLOR_ERROR
+
+    // Read Script Line Response
+    ,E_BLINKM_READ_SCRIPT_LINE_DURATION_RESPONSE
+    ,E_BLINKM_READ_SCRIPT_LINE_COMMAND_RESPONSE
+    ,E_BLINKM_READ_SCRIPT_LINE_ARG1_RESPONSE
+    ,E_BLINKM_READ_SCRIPT_LINE_ARG2_RESPONSE
+    ,E_BLINKM_READ_SCRIPT_LINE_ARG3_RESPONSE
+    ,E_BLINKM_READ_SCRIPT_LINE_ERROR
+
+    // Get Address Response
+    ,E_BLINKM_GET_ADDRESS_RESPONSE
+    ,E_BLINKM_GET_ADDRESS_ERROR
+
+    // Get Firmware Version
+    ,E_BLINKM_GET_FIRMWARE_MAJOR_VERSION_RESPONSE
+    ,E_BLINKM_GET_FIRMWARE_MINOR_VERSION_RESPONSE
+    ,E_BLINKM_GET_FIRMWARE_VERSION_ERROR
 
     // Must remain the last item on the list
     ,E_LAST_INPUT_EVENT   

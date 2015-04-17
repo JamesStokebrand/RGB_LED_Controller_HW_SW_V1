@@ -40,6 +40,11 @@
 #include "observer_class.h"
 #endif
 
+#ifndef _PIN_CLASS_H_
+#include "pin_class.h"
+#endif
+
+// Interrupt handler for PortB input pins (IE buttons, rotary encoders etc)
 class PORTB_interrupt_subject
 : public InterruptSubjectPinIntr
 {
@@ -50,6 +55,7 @@ public:
 private:
 };
 
+// Interrupt handler for PortC input pins (IE buttons, rotary encoders etc)
 class PORTC_interrupt_subject
 : public InterruptSubjectPinIntr
 {
@@ -60,6 +66,7 @@ public:
 private:
 };
 
+// Interrupt handler for PortD input pins (IE buttons, rotary encoders etc)
 class PORTD_interrupt_subject
 : public InterruptSubjectPinIntr
 {
@@ -68,6 +75,16 @@ public:
     virtual ~PORTD_interrupt_subject() {}
     static PORTD_interrupt_subject* pINTR_handler;
 private:
+};
+
+// HAL lookup for the appropriate interrupt subject
+class lookup_port_interrupt_subject 
+{
+public:
+    lookup_port_interrupt_subject() { }
+    virtual ~lookup_port_interrupt_subject() { } 
+
+    static InterruptSubjectPinIntr *return_port_interrupt_subject(IOPinDefines::E_PinDef const &A);
 };
 
 class TIMER2_interrupt_subject

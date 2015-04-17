@@ -294,12 +294,15 @@ _Comm.encode(A);
             switch(A.get_current_event())
             {
             case E_LED_RED_PWM:
+            case E_LED_HUE_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_LEFT_TO_RIGHT_255_VALUE, A.get_current_data());
             break;
             case E_LED_GREEN_PWM:
+            case E_LED_SATURATION_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_DOT_IND_255_VALUE, A.get_current_data());
             break;
             case E_LED_BLUE_PWM:
+            case E_LED_INTENSITY_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_RIGHT_TO_LEFT_255_VALUE, A.get_current_data());
             default:
                 // Ignore all other events from Node
@@ -399,12 +402,15 @@ _Comm.encode(A);
             switch(A.get_current_event())
             {
             case E_LED_RED_PWM:
+            case E_LED_HUE_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_LEFT_TO_RIGHT_255_VALUE, A.get_current_data());
             break;
             case E_LED_GREEN_PWM:
+            case E_LED_SATURATION_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_DOT_IND_255_VALUE, A.get_current_data());
             break;
             case E_LED_BLUE_PWM:
+            case E_LED_INTENSITY_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_RIGHT_TO_LEFT_255_VALUE, A.get_current_data());
             default:
                 // Ignore all other events from Node
@@ -504,12 +510,15 @@ _Comm.encode(A);
             switch(A.get_current_event())
             {
             case E_LED_RED_PWM:
+            case E_LED_HUE_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_LEFT_TO_RIGHT_255_VALUE, A.get_current_data());
             break;
             case E_LED_GREEN_PWM:
+            case E_LED_SATURATION_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_DOT_IND_255_VALUE, A.get_current_data());
             break;
             case E_LED_BLUE_PWM:
+            case E_LED_INTENSITY_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_RIGHT_TO_LEFT_255_VALUE, A.get_current_data());
             default:
                 // Ignore all other events from Node
@@ -600,12 +609,15 @@ _Comm.encode(A);
             switch(A.get_current_event())
             {
             case E_LED_RED_PWM:
+            case E_LED_HUE_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_LEFT_TO_RIGHT_255_VALUE, A.get_current_data());
             break;
             case E_LED_GREEN_PWM:
+            case E_LED_SATURATION_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_DOT_IND_255_VALUE, A.get_current_data());
             break;
             case E_LED_BLUE_PWM:
+            case E_LED_INTENSITY_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_RIGHT_TO_LEFT_255_VALUE, A.get_current_data());
             default:
                 // Ignore all other events from Node
@@ -695,12 +707,15 @@ _Comm.encode(A);
             switch(A.get_current_event())
             {
             case E_LED_RED_PWM:
+            case E_LED_HUE_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_LEFT_TO_RIGHT_255_VALUE, A.get_current_data());
             break;
             case E_LED_GREEN_PWM:
+            case E_LED_SATURATION_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_DOT_IND_255_VALUE, A.get_current_data());
             break;
             case E_LED_BLUE_PWM:
+            case E_LED_INTENSITY_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_RIGHT_TO_LEFT_255_VALUE, A.get_current_data());
             default:
                 // Ignore all other events from Node
@@ -791,12 +806,15 @@ _Comm.encode(A);
             switch(A.get_current_event())
             {
             case E_LED_RED_PWM:
+            case E_LED_HUE_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_LEFT_TO_RIGHT_255_VALUE, A.get_current_data());
             break;
             case E_LED_GREEN_PWM:
+            case E_LED_SATURATION_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_DOT_IND_255_VALUE, A.get_current_data());
             break;
             case E_LED_BLUE_PWM:
+            case E_LED_INTENSITY_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_RIGHT_TO_LEFT_255_VALUE, A.get_current_data());
             default:
                 // Ignore all other events from Node
@@ -885,12 +903,15 @@ _Comm.encode(A);
             switch(A.get_current_event())
             {
             case E_LED_RED_PWM:
+            case E_LED_HUE_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_LEFT_TO_RIGHT_255_VALUE, A.get_current_data());
             break;
             case E_LED_GREEN_PWM:
+            case E_LED_SATURATION_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_DOT_IND_255_VALUE, A.get_current_data());
             break;
             case E_LED_BLUE_PWM:
+            case E_LED_INTENSITY_PWM:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_RIGHT_TO_LEFT_255_VALUE, A.get_current_data());
             default:
                 // Ignore all other events from Node

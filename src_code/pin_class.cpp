@@ -35,20 +35,15 @@
     2014 Sep 24  James Stokebrand   Updated to include
                                       interrupt handlers
 
+    2015 Apr 02  James Stokebrand   Put Port Interrupt Subject
+                                     instances in button_class.h
+                                     file.
+
 *****************************************************/
 
 #ifndef _PIN_CLASS_H_
 #include "pin_class.h"
 #endif
-
-#ifndef _HAL_INTERRUPTS_H_
-#include "hal_interrupts.h"
-#endif
-
-// TODO: These dont belong here.  Need to be moved to button class.
-PORTB_interrupt_subject aPortB_Inter;
-PORTC_interrupt_subject aPortC_Inter;
-PORTD_interrupt_subject aPortD_Inter;
 
 
 IOPinDefines::IOPinDefines(E_PinDef const &aPin, E_PinIntrType const &anIntr)
@@ -63,21 +58,18 @@ IOPinDefines::IOPinDefines(E_PinDef const &aPin, E_PinIntrType const &anIntr)
         _PinReg  = &PIND;
         _PortReg = &PORTD;
         _DDRReg  = &DDRD;
-        _Subject = &aPortD_Inter;
         _Bit = aPin - E_PIN_PORTD_BASE;
     } else if (aPin >= E_PIN_PC0) {
         // PortC
         _PinReg  = &PINC;
         _PortReg = &PORTC;
         _DDRReg  = &DDRC;
-        _Subject = &aPortC_Inter;
         _Bit = aPin - E_PIN_PORTC_BASE;
     } else {
         // PortB
         _PinReg  = &PINB;
         _PortReg = &PORTB;
         _DDRReg  = &DDRB;
-        _Subject = &aPortB_Inter;
         _Bit = aPin - E_PIN_PORTB_BASE;
     }
 };

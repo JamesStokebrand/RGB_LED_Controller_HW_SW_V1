@@ -102,13 +102,22 @@ LOCKBIT = 0xFF (valid)
 
 int main(void)
 {
+    // Enable MCU sleep
+    mcu_sleep_class::getInstance()->EnableSleep();
+
+    // Enable the status LED to show when the device
+    //  is awake
+    mcu_sleep_class::getInstance()->EnableStatusLED();
+
+    // Try to save more power.  Set these pins as input and enable pullup resistor
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PD3);
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PD4);
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PB6);
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PB7);
+
+
     // Event queue that really ties the room together
     EventQueue event_queue;
-
-#if 0
-    // Status LED (Yellow)
-    LED_CommonCathode StatusLED(IOPinDefines::E_PinDef::E_PIN_PD2);
-#endif
 
     // BLUE
     // Buttons (count three)
@@ -144,9 +153,6 @@ int main(void)
 
     // RGB Controller state machine
     rgb_controller_state_machine RGB_Controller(&event_queue);
-
-    // Enable MCU sleep
-    mcu_sleep_class::getInstance()->EnableSleep();
 
     sei();
 
