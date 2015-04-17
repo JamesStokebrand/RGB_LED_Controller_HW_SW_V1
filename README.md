@@ -36,5 +36,5 @@ https://jamesstokebrand.wordpress.com/category/rgb-led-controller-and-node-v1/
 
 23 Mar 2015 - Added Schematics and Project Cases
 
-17 Apr 2015 - Updated source code to update mcu sleeping.A
+17 Apr 2015 - Updated source code to update mcu sleeping.
 
