@@ -189,6 +189,3 @@ void mcu_sleep_class::SetInputAndPullupResistor(IOPinDefines::E_PinDef const &A)
     *(temp._PortReg) |= (1<<temp._Bit);
 }
 
-
-
-

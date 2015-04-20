@@ -70,9 +70,19 @@ public:
         ,E_COLOR_MODEL_LAST
     } E_ColorModel;
 
+
+    typedef enum {
+         E_STATUS_LED_ENABLED  = 4  // Status LED is ON  - displaying when the MCU is awake.
+        ,E_STATUS_LED_DISABLED = 11 // Status LED is OFF - displaying ... nothing.
+
+        // Must be the last ENUM
+        ,E_STATUS_LED_LAST_ENUM
+    } E_StatusLED;
+
     rgb_controller_state_machine(EventQueue *event_queue)
     : base_state_class((STATE)&rgb_controller_state_machine::STATE_IDLE)
     , _colorModel(E_COLOR_HSL) // Init to the HSL color model.
+    , _statusLED(E_STATUS_LED_DISABLED) // Init Status LED to disabled.
     , _CURRENT_ADDRESS(MIN_ADDRESS)
     , _event_queue(event_queue)
     , _timerID(255)
@@ -90,6 +100,9 @@ public:
         // Attach the USART to the event queue
         _Comm.Attach(event_queue);
         _timer.Attach(event_queue);
+
+        // Disable Status LED.
+        mcu_sleep_class::getInstance()->DisableStatusLED();
     }
 
     virtual ~rgb_controller_state_machine() {}
@@ -961,6 +974,13 @@ _Comm.encode(A);
                 send_msg(E_SELECT);
             }
         break;
+        case E_BUTTON_02:
+            if (A.get_current_event() == E_BUTTON_IS_PRESSED)
+            {
+                // Button2 pressed.  Go to Awake status LED select state.
+                TRAN((STATE)&rgb_controller_state_machine::STATE_LED_SELECT_AWAKE_LED_STATUS);
+            }
+        break;
         case E_BUTTON_03:
             if (A.get_current_event() == E_BUTTON_IS_PRESSED)
             {
@@ -1096,6 +1116,88 @@ _Comm.encode(A);
         }
     }
 
+    void STATE_LED_SELECT_AWAKE_LED_STATUS(event_element_class &A)
+    {
+#if DEBUG
+_Comm.encode(A);
+#endif
+
+        switch(A.get_current_hardware())
+        {
+        case E_STATE_MACHINE:
+            if (A.get_current_event() == E_ENTER_STATE)
+            {
+                // Set the RE CW/CCW count to zero
+                _rotary_encoder_count = 0;
+
+                // Send the SELECT msg to NODE to 
+                //  indicate to the user which
+                //  nodes are currently selected.
+                send_msg(E_SELECT);
+
+                // Display the current color model.
+                PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_DOT_IND_015_VALUE, (uint8_t)_statusLED);
+            }
+        break;
+        case E_BUTTON_01:
+            if (A.get_current_event() == E_BUTTON_IS_PRESSED)
+            {
+                // Button 1 has been pressed ... notify the user what nodes are
+                //  currently selected
+                send_msg(E_SELECT);
+            }
+        break;
+        case E_BUTTON_02:
+            if (A.get_current_event() == E_BUTTON_IS_RELEASED)
+            {
+                // Button2 released.  Go back to STATE_LED_SELECT
+                TRAN((STATE)&rgb_controller_state_machine::STATE_LED_SELECT);
+            }
+        break;
+        case E_ROTARY_ENCODER_01:
+            switch(A.get_current_event())
+            {
+            case E_ROTARY_ENCODER_ROTATED_CW:
+                _rotary_encoder_count++;
+            break;
+            case E_ROTARY_ENCODER_ROTATED_CCW:
+                _rotary_encoder_count--;
+            break;
+            case E_BUTTON_IS_PRESSED:
+                // RE Button press and release is the sequence to exit LED_SELECT mode
+                // Transition to await the RE release.
+                TRAN((STATE)&rgb_controller_state_machine::STATE_LED_SELECT_PRESSED);
+            break;
+            default:
+                // Ignore all other events
+            break;
+            }
+
+            if (ABS(_rotary_encoder_count) > ROTARY_ENCODER_COUNT_FOR_ADDRESS_CHANGE)
+            {
+                if (_rotary_encoder_count > 0) {
+                    // Disable the status LED
+                    _statusLED = E_STATUS_LED_DISABLED; // Indicate the current status
+                    send_msg(E_DISABLE_STATUS_LED); // Notify the node to DISABLE
+                    mcu_sleep_class::getInstance()->DisableStatusLED(); // Disable the controller's status LED.
+                } else { // RE count < 0
+                    // Enable the status LED.
+                    _statusLED = E_STATUS_LED_ENABLED; // Indicate the current status
+                    send_msg(E_ENABLE_STATUS_LED); // Notify the node to ENABLE
+                    mcu_sleep_class::getInstance()->EnableStatusLED(); // Enable the controller's status LED.
+                }
+                send_msg(E_SELECT);
+                _rotary_encoder_count=0;
+                // Display the status of the status LED.
+                PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_DOT_IND_015_VALUE, (uint8_t)_statusLED);
+            }
+        break;
+        default:
+            // Ignore all other msgs
+        break;
+        }
+    }
+
     void STATE_LED_SELECT_PRESSED(event_element_class &A)
     {
 #if DEBUG
@@ -1192,6 +1294,9 @@ _Comm.encode(A);
 
     // Define the current color model
     E_ColorModel _colorModel;
+
+    // Turn on the Status LED indicating when the MCU is awake
+    E_StatusLED _statusLED;
 
     // Node address is the address read from the DIP switches
     uint8_t _CURRENT_ADDRESS;

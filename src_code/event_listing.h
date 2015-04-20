@@ -128,6 +128,11 @@ typedef enum {
     ,E_SELECT             // 0x20
     ,E_FORCE_FEEDBACK     // 0x21
 
+    // Enable Status LED (displays when the MCU is sleeping)
+    ,E_ENABLE_STATUS_LED  // 0x22
+    ,E_DISABLE_STATUS_LED // 0x23
+    
+
     // RGB Node specific
     //  RGB Color
     ,E_LED_RED_PWM         = 0x30

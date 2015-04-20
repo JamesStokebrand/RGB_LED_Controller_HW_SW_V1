@@ -108,16 +108,16 @@ int main(void)
     // Idle is the default power mode ... but set it anyway.
     mcu_sleep_class::getInstance()->SetSleepMode(mcu_sleep_class::E_MCU_SLEEP_MODE_IDLE);
 
-    // Enable the status LED to show when the device
-    //  is awake
-    mcu_sleep_class::getInstance()->EnableStatusLED();
-
     // Try to save more power.  Set these pins as input and enable pullup resistor
     mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PD3);
     mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PD4);
     mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PB6);
     mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PB7);
 
+    // MCU Programming header.  Only used when programming.  Turn these off also.
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PB5);
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PB4);
+    mcu_sleep_class::getInstance()->SetInputAndPullupResistor(IOPinDefines::E_PinDef::E_PIN_PB3);
 
     // Event queue that really ties the room together
     EventQueue event_queue;
