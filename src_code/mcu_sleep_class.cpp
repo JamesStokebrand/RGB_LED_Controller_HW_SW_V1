@@ -140,6 +140,9 @@ void mcu_sleep_class::GoMakeSleepNow()
 
 void mcu_sleep_class::SetInputAndPullupResistor(IOPinDefines::E_PinDef const &A)
 {
+    // Didn't enable sleep!  Just return.
+    if (!_AllowSleep) return;
+
     // This doesn't save much power ... but every little 
     //   bit helps.
 

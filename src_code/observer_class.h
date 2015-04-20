@@ -45,7 +45,7 @@
 
 static const uint8_t DEFAULT_NUMBER_OF_PIN_INTERRUPT_OBSERVERS = 8;
 
-static const uint8_t DEFAULT_NUMBER_OF_PWM_INTERRUPT_OBSERVERS = 6;
+static const uint8_t DEFAULT_NUMBER_OF_PWM_INTERRUPT_OBSERVERS = 3;
 
 
 class EventObserver
