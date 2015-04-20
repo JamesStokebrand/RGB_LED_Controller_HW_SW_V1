@@ -105,6 +105,9 @@ int main(void)
     // Enable MCU sleep
     mcu_sleep_class::getInstance()->EnableSleep();
 
+    // Idle is the default power mode ... but set it anyway.
+    mcu_sleep_class::getInstance()->SetSleepMode(mcu_sleep_class::E_MCU_SLEEP_MODE_IDLE);
+
     // Enable the status LED to show when the device
     //  is awake
     mcu_sleep_class::getInstance()->EnableStatusLED();

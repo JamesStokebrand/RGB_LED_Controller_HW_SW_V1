@@ -11,8 +11,8 @@
     state_class.h file is part of the RGB LED Controller and Node 
      version 1 hardware project.
 
-    This file implements a state machine base class that will
-     help to implement state machines.
+    This file is a helper class that will work behind the scenes to help 
+      implement state machines.
 
     Copyright (C) 2015 - James Stokebrand - 2015 Mar 12
 

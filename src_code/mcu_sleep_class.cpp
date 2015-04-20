@@ -77,6 +77,14 @@ void mcu_sleep_class::EnableStatusLED() {
     SleepStatusLED.On();
 }
 
+
+void mcu_sleep_class::SetSleepMode(E_PowerSleepMode const &A)
+{
+    // External interface to update/change the sleep mode
+    _PowerSleepMode = A;    
+}
+
+
 void mcu_sleep_class::SetInterfaceUsage(E_PowerUsage const &_Interface, E_PowerInterfaceInUse const &_InUse)
 {
     // If we didn't enable sleeping ... dont bother to set the bits.
@@ -105,7 +113,7 @@ void mcu_sleep_class::GoMakeSleepNow()
     // Didn't enable sleep!  Just return.
     if (!_AllowSleep) return;
 
-    // Possible power sleep mode types:
+    // Possible power sleep mode types for the ATmega328p:
     //   SLEEP_MODE_IDLE - works
     //   SLEEP_MODE_ADC
     //   SLEEP_MODE_PWR_DOWN
@@ -113,9 +121,32 @@ void mcu_sleep_class::GoMakeSleepNow()
     //   SLEEP_MODE_STANDBY
     //   SLEEP_MODE_EXT_STANDBY
 
-    // select POWER SAVE mode for sleeping
-    //  Allows timers and interrupts for wakeup
-    set_sleep_mode(SLEEP_MODE_IDLE);
+    // select POWER SAVE mode before sleeping
+    switch (_PowerSleepMode)
+    {
+    case E_MCU_SLEEP_MODE_IDLE:
+        // This is the default
+        set_sleep_mode(SLEEP_MODE_IDLE);
+    break;
+    case E_MCU_SLEEP_MODE_ADC:
+        set_sleep_mode(SLEEP_MODE_ADC);
+    break;
+    case E_MCU_SLEEP_MODE_PWR_DOWN:
+        set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+    break;
+    case E_MCU_SLEEP_MODE_PWR_SAVE:
+        set_sleep_mode(SLEEP_MODE_PWR_SAVE);
+    break;
+    case E_MCU_SLEEP_MODE_STANDBY:
+        set_sleep_mode(SLEEP_MODE_STANDBY);
+    break;
+    case E_MCU_SLEEP_MODE_EXT_STANDBY:
+        set_sleep_mode(SLEEP_MODE_EXT_STANDBY);
+    break;
+    default:
+        // Do nothing in this case.
+    break;
+    }
 
     cli();
     sleep_enable();

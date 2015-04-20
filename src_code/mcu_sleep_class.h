@@ -56,17 +56,30 @@ class mcu_sleep_class
 public:
     // Define each bit in the PRR register
     typedef enum {
-         E_TWI_INTERFACE = PRTWI
+         E_TWI_INTERFACE        = PRTWI
         ,E_TIMER_ZERO_INTERFACE = PRTIM0
-        ,E_TIMER_ONE_INTERFACE = PRTIM1
-        ,E_TIMER_TWO_INTERFACE = PRTIM2
-        ,E_SPI_INTERFACE = PRSPI
-        ,E_USART_INTERFACE = PRUSART0
-        ,E_ADC_INTERFACE = PRADC
+        ,E_TIMER_ONE_INTERFACE  = PRTIM1
+        ,E_TIMER_TWO_INTERFACE  = PRTIM2
+        ,E_SPI_INTERFACE        = PRSPI
+        ,E_USART_INTERFACE      = PRUSART0
+        ,E_ADC_INTERFACE        = PRADC
 
         // Must remain the last enum
         ,E_LAST_POWER_USE_ENUM
     } E_PowerUsage;
+
+    // These map from the sleep.h defines
+    typedef enum {
+         E_MCU_SLEEP_MODE_IDLE
+        ,E_MCU_SLEEP_MODE_ADC
+        ,E_MCU_SLEEP_MODE_PWR_DOWN
+        ,E_MCU_SLEEP_MODE_PWR_SAVE
+        ,E_MCU_SLEEP_MODE_STANDBY
+        ,E_MCU_SLEEP_MODE_EXT_STANDBY
+
+        // Must remain the last enum
+        ,E_MCU_SLEEP_MODE_LAST_ENUM
+    } E_PowerSleepMode;
 
     typedef enum {
          E_POWER_INTERFACE_DISABLE_POWER_SAVINGS = 0
@@ -79,6 +92,9 @@ public:
     static mcu_sleep_class* getInstance();
     void DisableSleep();
     void EnableSleep();
+
+    // Set the sleep mode
+    void SetSleepMode(E_PowerSleepMode const &A);
 
     // These methods enable/disable the status LED for
     //  debugging
@@ -95,6 +111,7 @@ private:
     // Constructor is private for singleton
     mcu_sleep_class()
     : _AllowSleep(false)
+    , _PowerSleepMode(E_MCU_SLEEP_MODE_IDLE) // default to Idle
     , SleepStatusLED(IOPinDefines::E_PinDef::E_PIN_PD2)
     , _EnableStatusLED(false)
     {
@@ -127,6 +144,8 @@ private:
 
     volatile uint8_t _power_reduction_variable;
     bool _AllowSleep;
+
+    volatile E_PowerSleepMode _PowerSleepMode;
 
     // Status LED (Yellow)
     LED_CommonCathode SleepStatusLED;
