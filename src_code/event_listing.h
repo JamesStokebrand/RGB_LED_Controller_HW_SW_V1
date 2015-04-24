@@ -2,13 +2,13 @@
 #define _EVENT_LISTING_H_
 
 /****************************************************
-    AVR Event Listing 
+    AVR Event Listing
 
     File:   event_listing.h
     Author: James Stokebrand
     jamesstokebrand AT gmail DOT com
 
-    event_listing.h file is part of the RGB LED Controller and Node 
+    event_listing.h file is part of the RGB LED Controller and Node
      version 1 hardware project.
 
     This code defines what events are sent through the event queue.
@@ -47,11 +47,11 @@ typedef enum {
 
     // Timers
     ,E_TIMER_01         // 0x04
-     
+
     // USARTs
     ,E_UART_00          // 0x05
 
-    // Rotary Encoder 
+    // Rotary Encoder
     ,E_ROTARY_ENCODER_01 // 0x06
 
     // State Machine
@@ -76,10 +76,10 @@ typedef enum {
     ,E_BLINKM_01          // 0x0D
 
     // Must be the last item on the list
-    ,E_LAST_HARDWARE_EVENT 
+    ,E_LAST_HARDWARE_EVENT
 } E_InputHardware;
 
-// List of possible events 
+// List of possible events
 typedef enum {
     // Button specific
      E_BUTTON_IS_RELEASED  = 0x00
@@ -112,36 +112,43 @@ typedef enum {
     ,E_SET_HUE            // 0x13
     ,E_SET_SATURATION     // 0x14
     ,E_SET_INTENSITY      // 0x15
+    //  Color script methods
+    ,E_SET_SCRIPT         // 0x16
+    ,E_SET_DELAY          // 0x17
+    ,E_SET_FADE           // 0x18
     //  Rotary Encoder
-    ,E_RE_CW              // 0x16
-    ,E_RE_CCW             // 0x17
-    ,E_RE_PRESSED         // 0x18
-    ,E_RE_RELEASED        // 0x19
+    ,E_RE_CW              // 0x19
+    ,E_RE_CCW             // 0x1A
+    ,E_RE_PRESSED         // 0x1B
+    ,E_RE_RELEASED        // 0x1C
     //  Button Combos
-    ,E_ONLY_RED           // 0x1A
-    ,E_ONLY_GREEN         // 0x1B
-    ,E_ONLY_BLUE          // 0x1C
-    ,E_ALL_OFF            // 0x1D
-    ,E_ALL_HALF           // 0x1E
-    ,E_ALL_ON             // 0x1F
+    ,E_ONLY_RED           // 0x1D
+    ,E_ONLY_GREEN         // 0x1E
+    ,E_ONLY_BLUE          // 0x1F
+    ,E_ALL_OFF            // 0x20
+    ,E_ALL_HALF           // 0x21
+    ,E_ALL_ON             // 0x22
     //  Node Selection
-    ,E_SELECT             // 0x20
-    ,E_FORCE_FEEDBACK     // 0x21
+    ,E_SELECT             // 0x23
+    ,E_FORCE_FEEDBACK     // 0x24
 
     // Enable Status LED (displays when the MCU is sleeping)
-    ,E_ENABLE_STATUS_LED  // 0x22
-    ,E_DISABLE_STATUS_LED // 0x23
-    
+    ,E_ENABLE_STATUS_LED  // 0x25
+    ,E_DISABLE_STATUS_LED // 0x26
 
     // RGB Node specific
     //  RGB Color
     ,E_LED_RED_PWM         = 0x30
     ,E_LED_GREEN_PWM      // 0x31
     ,E_LED_BLUE_PWM       // 0x32
-    //  HSL Color 
+    //  HSL Color
     ,E_LED_HUE_PWM        // 0x33
     ,E_LED_SATURATION_PWM // 0x34
     ,E_LED_INTENSITY_PWM  // 0x35
+    //  Script Color
+    ,E_LED_SCRIPT_VALUE   // 0x36
+    ,E_LED_DELAY_VALUE    // 0x37
+    ,E_LED_FADE_VALUE     // 0x38
 
     // SPI Baseline
     ,E_SPI_BYTE_COMPLETE   = 0x40
@@ -188,7 +195,7 @@ typedef enum {
     ,E_BLINKM_GET_FIRMWARE_VERSION_ERROR
 
     // Must remain the last item on the list
-    ,E_LAST_INPUT_EVENT   
+    ,E_LAST_INPUT_EVENT
 } E_InputEvent;
 
 class event_element_class
@@ -288,7 +295,7 @@ public:
         return *this;
     }
 
-    void clear() 
+    void clear()
     {
         set(E_LAST_HARDWARE_EVENT,E_LAST_INPUT_EVENT,0);
     }

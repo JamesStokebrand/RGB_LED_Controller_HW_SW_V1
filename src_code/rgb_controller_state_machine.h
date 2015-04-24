@@ -63,8 +63,9 @@ class rgb_controller_state_machine
 public:
 
     typedef enum {
-         E_COLOR_RGB  = 4  // Red/Green/Blue Color Model
-        ,E_COLOR_HSL  = 11 // Hue/Saturation/Luminosity Color Model
+         E_COLOR_RGB    = 2  // Red/Green/Blue Color Model
+        ,E_COLOR_HSL    = 7  // Hue/Saturation/Luminosity Color Model
+        ,E_COLOR_SCRIPT = 13 // Play script state
 
         // Must be the last ENUM 
         ,E_COLOR_MODEL_LAST
@@ -143,6 +144,12 @@ _Comm.encode(A);
         case E_BUTTON_01:
             if (A.get_current_event() == E_BUTTON_IS_PRESSED)
             {
+                // If _colorModel is E_COLOR_SCRIPT .. pushing button1 means 
+                //  adjust the script value.
+                if (_colorModel == E_COLOR_SCRIPT) {
+                    send_msg(E_SET_SCRIPT);
+                }
+
                 // Button 1 has been pressed ... transition
                 TRAN((STATE)&rgb_controller_state_machine::STATE_BUTTON_1_PRESSED);
             }
@@ -150,6 +157,12 @@ _Comm.encode(A);
         case E_BUTTON_02:
             if (A.get_current_event() == E_BUTTON_IS_PRESSED)
             {
+                // If _colorModel is E_COLOR_SCRIPT .. pushing button2 means 
+                //  adjust the delay value.
+                if (_colorModel == E_COLOR_SCRIPT) {
+                    send_msg(E_SET_DELAY);
+                }
+
                 // Button 2 has been pressed ... transition
                 TRAN((STATE)&rgb_controller_state_machine::STATE_BUTTON_2_PRESSED);
             }
@@ -157,6 +170,12 @@ _Comm.encode(A);
         case E_BUTTON_03:
             if (A.get_current_event() == E_BUTTON_IS_PRESSED)
             {
+                // If _colorModel is E_COLOR_SCRIPT .. pushing button3 means 
+                //  adjust the fade speed value.
+                if (_colorModel == E_COLOR_SCRIPT) {
+                    send_msg(E_SET_FADE);
+                }
+
                 // Button 3 has been pressed ... transition
                 TRAN((STATE)&rgb_controller_state_machine::STATE_BUTTON_3_PRESSED);
             }
@@ -199,14 +218,17 @@ _Comm.encode(A);
             {
             case E_LED_RED_PWM:
             case E_LED_HUE_PWM:
+            case E_LED_SCRIPT_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_LEFT_TO_RIGHT_255_VALUE, A.get_current_data());
             break;
             case E_LED_GREEN_PWM:
             case E_LED_SATURATION_PWM:
+            case E_LED_DELAY_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_DOT_IND_255_VALUE, A.get_current_data());
             break;
             case E_LED_BLUE_PWM:
             case E_LED_INTENSITY_PWM:
+            case E_LED_FADE_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_RIGHT_TO_LEFT_255_VALUE, A.get_current_data());
             default:
                 // Ignore all other events from Node
@@ -229,9 +251,12 @@ _Comm.encode(A);
         case E_STATE_MACHINE:
             if (A.get_current_event() == E_ENTER_STATE)
             {
-                // Set the timer
-                _timerID = _timer.set(BUTTON_TIMEOUT);
-                _timer.start(_timerID);
+                if (_colorModel != E_COLOR_SCRIPT)
+                {
+                    // Set the timer
+                    _timerID = _timer.set(BUTTON_TIMEOUT);
+                    _timer.start(_timerID);
+                }
             }
             if (A.get_current_event() == E_EXIT_STATE)
             {
@@ -263,6 +288,9 @@ _Comm.encode(A);
                 } else if (_colorModel == E_COLOR_HSL) {
                     //  Using HSL color model send E_SET_HUE msg
                     send_msg(E_SET_HUE);
+                } else if (_colorModel == E_COLOR_SCRIPT) {
+                    //  Using Script color model send E_SET_INTENSITY msg
+                    send_msg(E_SET_INTENSITY);
                 }
 
                 // Sequence complete ... go back to idle
@@ -308,14 +336,17 @@ _Comm.encode(A);
             {
             case E_LED_RED_PWM:
             case E_LED_HUE_PWM:
+            case E_LED_SCRIPT_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_LEFT_TO_RIGHT_255_VALUE, A.get_current_data());
             break;
             case E_LED_GREEN_PWM:
             case E_LED_SATURATION_PWM:
+            case E_LED_DELAY_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_DOT_IND_255_VALUE, A.get_current_data());
             break;
             case E_LED_BLUE_PWM:
             case E_LED_INTENSITY_PWM:
+            case E_LED_FADE_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_RIGHT_TO_LEFT_255_VALUE, A.get_current_data());
             default:
                 // Ignore all other events from Node
@@ -338,9 +369,12 @@ _Comm.encode(A);
         case E_STATE_MACHINE:
             if (A.get_current_event() == E_ENTER_STATE)
             {
-                // Set the timer
-                _timerID = _timer.set(BUTTON_TIMEOUT);
-                _timer.start(_timerID);
+                if (_colorModel != E_COLOR_SCRIPT)
+                {
+                    // Set the timer
+                    _timerID = _timer.set(BUTTON_TIMEOUT);
+                    _timer.start(_timerID);
+                }
             }
             if (A.get_current_event() == E_EXIT_STATE)
             {
@@ -378,6 +412,9 @@ _Comm.encode(A);
                 } else if (_colorModel == E_COLOR_HSL) {
                     //  Using HSL color model send E_SET_SATURATION msg
                     send_msg(E_SET_SATURATION);
+                } else if (_colorModel == E_COLOR_SCRIPT) {
+                    //  Using Script color model send E_SET_INTENSITY msg
+                    send_msg(E_SET_INTENSITY);
                 }
 
                 // Sequence complete ... go back to idle
@@ -416,14 +453,17 @@ _Comm.encode(A);
             {
             case E_LED_RED_PWM:
             case E_LED_HUE_PWM:
+            case E_LED_SCRIPT_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_LEFT_TO_RIGHT_255_VALUE, A.get_current_data());
             break;
             case E_LED_GREEN_PWM:
             case E_LED_SATURATION_PWM:
+            case E_LED_DELAY_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_DOT_IND_255_VALUE, A.get_current_data());
             break;
             case E_LED_BLUE_PWM:
             case E_LED_INTENSITY_PWM:
+            case E_LED_FADE_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_RIGHT_TO_LEFT_255_VALUE, A.get_current_data());
             default:
                 // Ignore all other events from Node
@@ -446,9 +486,12 @@ _Comm.encode(A);
         case E_STATE_MACHINE:
             if (A.get_current_event() == E_ENTER_STATE)
             {
-                // Set the timer
-                _timerID = _timer.set(BUTTON_TIMEOUT);
-                _timer.start(_timerID);
+                if (_colorModel != E_COLOR_SCRIPT)
+                {
+                    // Set the timer
+                    _timerID = _timer.set(BUTTON_TIMEOUT);
+                    _timer.start(_timerID);
+                }
             }
             if (A.get_current_event() == E_EXIT_STATE)
             {
@@ -493,6 +536,9 @@ _Comm.encode(A);
                 } else if (_colorModel == E_COLOR_HSL) {
                     //  Using HSL color model send E_SET_INTENSITY msg
                     send_msg(E_SET_INTENSITY);
+                } else if (_colorModel == E_COLOR_SCRIPT) {
+                    //  Using Script color model send E_SET_INTENSITY msg
+                    send_msg(E_SET_INTENSITY);
                 }
 
                 // Sequence complete ... go back to idle
@@ -524,14 +570,17 @@ _Comm.encode(A);
             {
             case E_LED_RED_PWM:
             case E_LED_HUE_PWM:
+            case E_LED_SCRIPT_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_LEFT_TO_RIGHT_255_VALUE, A.get_current_data());
             break;
             case E_LED_GREEN_PWM:
             case E_LED_SATURATION_PWM:
+            case E_LED_DELAY_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_DOT_IND_255_VALUE, A.get_current_data());
             break;
             case E_LED_BLUE_PWM:
             case E_LED_INTENSITY_PWM:
+            case E_LED_FADE_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_RIGHT_TO_LEFT_255_VALUE, A.get_current_data());
             default:
                 // Ignore all other events from Node
@@ -623,14 +672,17 @@ _Comm.encode(A);
             {
             case E_LED_RED_PWM:
             case E_LED_HUE_PWM:
+            case E_LED_SCRIPT_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_LEFT_TO_RIGHT_255_VALUE, A.get_current_data());
             break;
             case E_LED_GREEN_PWM:
             case E_LED_SATURATION_PWM:
+            case E_LED_DELAY_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_DOT_IND_255_VALUE, A.get_current_data());
             break;
             case E_LED_BLUE_PWM:
             case E_LED_INTENSITY_PWM:
+            case E_LED_FADE_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_RIGHT_TO_LEFT_255_VALUE, A.get_current_data());
             default:
                 // Ignore all other events from Node
@@ -721,14 +773,17 @@ _Comm.encode(A);
             {
             case E_LED_RED_PWM:
             case E_LED_HUE_PWM:
+            case E_LED_SCRIPT_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_LEFT_TO_RIGHT_255_VALUE, A.get_current_data());
             break;
             case E_LED_GREEN_PWM:
             case E_LED_SATURATION_PWM:
+            case E_LED_DELAY_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_DOT_IND_255_VALUE, A.get_current_data());
             break;
             case E_LED_BLUE_PWM:
             case E_LED_INTENSITY_PWM:
+            case E_LED_FADE_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_RIGHT_TO_LEFT_255_VALUE, A.get_current_data());
             default:
                 // Ignore all other events from Node
@@ -820,14 +875,17 @@ _Comm.encode(A);
             {
             case E_LED_RED_PWM:
             case E_LED_HUE_PWM:
+            case E_LED_SCRIPT_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_LEFT_TO_RIGHT_255_VALUE, A.get_current_data());
             break;
             case E_LED_GREEN_PWM:
             case E_LED_SATURATION_PWM:
+            case E_LED_DELAY_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_DOT_IND_255_VALUE, A.get_current_data());
             break;
             case E_LED_BLUE_PWM:
             case E_LED_INTENSITY_PWM:
+            case E_LED_FADE_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_RIGHT_TO_LEFT_255_VALUE, A.get_current_data());
             default:
                 // Ignore all other events from Node
@@ -917,14 +975,17 @@ _Comm.encode(A);
             {
             case E_LED_RED_PWM:
             case E_LED_HUE_PWM:
+            case E_LED_SCRIPT_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_LEFT_TO_RIGHT_255_VALUE, A.get_current_data());
             break;
             case E_LED_GREEN_PWM:
             case E_LED_SATURATION_PWM:
+            case E_LED_DELAY_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_DOT_IND_255_VALUE, A.get_current_data());
             break;
             case E_LED_BLUE_PWM:
             case E_LED_INTENSITY_PWM:
+            case E_LED_FADE_VALUE:
                 PwmDisplay.Display(pwm_six_display::E_SixDisplayType::E_SIX_DISPLAY_RIGHT_TO_LEFT_255_VALUE, A.get_current_data());
             default:
                 // Ignore all other events from Node
@@ -1098,11 +1159,34 @@ _Comm.encode(A);
             {
                 if (_rotary_encoder_count > 0)
                 {
-                    // Select E_COLOR_HSL
-                    _colorModel = E_COLOR_HSL;
+                    // Go to the next enum (if there is one)
+                    switch (_colorModel) {
+                    case E_COLOR_RGB:
+                        _colorModel = E_COLOR_HSL;
+                    break;
+                    case E_COLOR_HSL:
+                    case E_COLOR_SCRIPT:
+                    default:
+                        // This is maxed out.  Go/Stay at E_COLOR_SCRIPT
+                        _colorModel = E_COLOR_SCRIPT;
+                    break;
+                    }
                 } else { // RE count < 0
-                    // Select E_COLOR_RGB
-                    _colorModel = E_COLOR_RGB;
+
+                    // Go to the previous enum (if there is one)
+                    switch (_colorModel) {
+                    case E_COLOR_HSL:
+                        _colorModel = E_COLOR_RGB; // Previous
+                    break;
+                    case E_COLOR_SCRIPT:
+                        _colorModel = E_COLOR_HSL; // Previous
+                    break;
+                    case E_COLOR_RGB:
+                    default:
+                        // This is minimum value. Go/Stay at E_COLOR_RGB
+                        _colorModel = E_COLOR_RGB;
+                    break;
+                    }
                 }
                 send_msg(E_SELECT);
                 _rotary_encoder_count=0;
